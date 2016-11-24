@@ -5,6 +5,7 @@ exception Error of int
 val string_of_error : int -> string
 
 type sample_format =
+  | Sample_format_u8
   | Sample_format_s16le
   | Sample_format_s16be
   | Sample_format_float32le
@@ -47,6 +48,7 @@ module Simple : sig
   val free : t -> unit
 
   val read : t -> float array array -> int -> int -> unit
+  val read_bytes: t -> Bytes.t -> int -> unit
 
   val write : t -> float array array -> int -> int -> unit
 

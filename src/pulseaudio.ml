@@ -7,6 +7,7 @@ external string_of_error : int -> string = "ocaml_pa_strerror"
 
 (* TODO *)
 type sample_format =
+  | Sample_format_u8
   | Sample_format_s16le
   | Sample_format_s16be
   | Sample_format_float32le
@@ -55,4 +56,5 @@ module Simple = struct
   external latency : t -> int = "ocaml_pa_simple_get_latency"
 
   external read : t -> float array array -> int -> int -> unit = "ocaml_pa_read_float"
+  external read_bytes : t -> Bytes.t -> int -> unit = "ocaml_pa_read_bytes"
 end

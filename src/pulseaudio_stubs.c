@@ -29,7 +29,7 @@ static pa_sample_spec* sample_spec_val(value spec)
   pa_sample_spec *ans = malloc(sizeof(pa_sample_spec));
 
   /* TODO */
-  ans->format = PA_SAMPLE_FLOAT32LE;
+  ans->format = PA_SAMPLE_U8;
   ans->rate = Int_val(Field(spec, 1));
   ans->channels = Int_val(Field(spec, 2));
 
@@ -220,6 +220,29 @@ CAMLprim value ocaml_pa_read_float(value _simple, value _buf, value _ofs, value 
       Store_double_field(bufc, ofs + i, buf[chans*i+c]);
   }
   free(buf);
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ocaml_pa_read_bytes(value _simple, value _buf, value _len)
+{
+  CAMLparam3(_simple, _buf, _len);
+  pa_simple *simple = Simple_val(_simple);
+  int len = Int_val(_len);
+  uint8_t *buf = &Byte(_buf, 0);
+  int err, ret;
+  int chans = Simple_chans_val(_simple);
+  int c, i;
+
+  caml_enter_blocking_section();
+  ret = pa_simple_read(simple, buf, len, &err);
+  caml_leave_blocking_section();
+
+  if(ret < 0)
+  {
+    free(buf);
+    caml_raise_with_arg(*caml_named_value("pa_exn_error"), Val_int(err));
+  }
 
   CAMLreturn(Val_unit);
 }
