@@ -1,11 +1,10 @@
 # check for one particular file of the sources 
+AC_CONFIG_MACRO_DIR([m4])
 AC_INIT([ocaml-pulseaudio],[0.1.3],[savonet-users@lists.sourceforge.net])
 
 VERSION=$PACKAGE_VERSION
 AC_MSG_RESULT([configuring $PACKAGE_STRING])
-
 AC_BASE_CHECKS()
-
 PKG_PROG_PKG_CONFIG()
 PKG_CONFIG_CHECK_MODULE([libpulse])
 PKG_CONFIG_CHECK_MODULE([libpulse-simple])
